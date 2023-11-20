@@ -1,6 +1,6 @@
-import {Button, Container} from "react-bootstrap";
-import {arbol} from "./Arbol";
-import Visualizar from "./Components/Visualizar.jsx";
+import {Container} from "react-bootstrap";
+import arbol from "./Arbol";
+import Proyecto from "./Components/Proyecto.jsx";
 import {useEffect, useState} from "react";
 
 function App() {
@@ -31,8 +31,8 @@ function App() {
 
   return (
     <Container>
-      hola mundo
       <form onSubmit={subir}>
+        <label>Añade una nueva categoria</label>
         <input type="text" name='nodo'/>
         <button>
           Añadir
@@ -42,9 +42,10 @@ function App() {
       <section
       className='d-flex justify-content-center'
       >
-        <Visualizar
+        <Proyecto
           nodes={nodes}
           edges={edges}
+          arbol={arbol}
         />
       </section>
 

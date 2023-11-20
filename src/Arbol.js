@@ -3,6 +3,7 @@ class Nodo {
     this.id = id;
     this.izquierda = null;
     this.valor = valor;
+    this.proyectos = new Arbol();
     this.derecha = null;
   }
 }
@@ -12,6 +13,7 @@ class Arbol {
     this.numNodos = 0;
     this.nodes = [];
     this.edges = [];
+    this.tareas = [];
     this.padre = null;
   }
 
@@ -25,6 +27,21 @@ class Arbol {
     } else {
       this._agregarNodo(this.padre, nodo);
     }
+  }
+
+  agregar_proyecto(nodeID, valor) {
+    const nodo = this.buscar_info_id(id);
+    if(nodo.proyectos._existe(valor)) return;
+    nodo.proyectos.agregar(valor);
+  }
+
+  agregar_tarea(nodeID, projectID, valor) {
+    const nodo = this.buscar_info_id(nodeID);
+    if(!nodo.proyectos.buscar_info_id(projectID)) return;
+    nodo.proyectos.tareas.push({
+      projectID: projectID,
+      tarea: valor
+    })
   }
 
   _agregarNodo(padre, nodo) {
@@ -65,8 +82,25 @@ class Arbol {
     }
   }
 
+  buscar_info_id(id) {
+    if (this.padre === null) {
+      return 'No existe el arbol';
+    } else {
+      return this._buscarInfoPorID(this.padre, id);
+    }
+  }
+
+  _buscarInfoPorID(padre, id) {
+    if (padre === null) {
+      return false
+    } else if (padre.id === id) {
+      return padre;
+    } else {
+      return this._buscarInfoPorID(padre.izquierda, id) || this._buscarInfoPorID(padre.derecha, id);
+    }
+  }
 }
 
+const arbol = new Arbol();
 
-
-export const arbol = new Arbol();
+export default arbol;
