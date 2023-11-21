@@ -4,6 +4,7 @@ class Nodo {
     this.izquierda = null;
     this.valor = valor;
     this.proyectos = new Arbol();
+    this.tareas = [];
     this.derecha = null;
   }
 }
@@ -13,7 +14,6 @@ class Arbol {
     this.numNodos = 0;
     this.nodes = [];
     this.edges = [];
-    this.tareas = [];
     this.padre = null;
   }
 
@@ -32,18 +32,19 @@ class Arbol {
 
   agregar_proyecto(nodeID, valor) {
     const nodo = this.buscar_info_id(nodeID);
-    console.log(nodo)
     if(nodo.proyectos._existe(valor)) return;
     nodo.proyectos.agregar(valor);
   }
 
-  agregar_tarea(nodeID, projectID, valor) {
-    const nodo = this.buscar_info_id(nodeID);
-    if(!nodo.proyectos.buscar_info_id(projectID)) return;
-    nodo.proyectos.tareas.push({
-      projectID: projectID,
-      tarea: valor
-    })
+  agregar_tarea(proyectID, categoriaID, valor, prioridad) {
+    const nodo = this.buscar_info_id(proyectID);
+    const categoria = nodo.proyectos.buscar_info_id(categoriaID);
+    categoria.tareas.push({
+      proyectID: proyectID,
+      categoriaID: categoriaID,
+      valor: valor,
+      prioridad: prioridad
+    });
   }
 
   _agregarNodo(padre, nodo) {

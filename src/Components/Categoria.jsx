@@ -1,10 +1,31 @@
 import {Button, Modal} from "react-bootstrap";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {Network} from "vis-network";
+import Tareas from "./Tareas.jsx";
 
 export default function Categoria({CategoriaID, openModal, setOpenModal, arbol}){
 
   const [CategoriaInfo, setCategoriaInfo] = useState(arbol.buscar_info_id(CategoriaID))
+  const [openTareas, setOpenTareas] = useState(false)
+  const [projectID, setProjectID] = useState(0)
+
+  useEffect(() => {
+    if(projectID === 0) {
+      setOpenTareas(false)
+      return;
+    }
+    console.log("abriendo modal de tareas 2")
+    setOpenTareas(true)
+  }, [projectID]);
+
+  useEffect(() => {
+    console.log("openModal", openModal)
+    if(!openModal){
+      console.log("cerrando modal de tareas, reseteando projectID")
+      setProjectID(0)
+    }
+  }, [openTareas]);
+
   const handleClose = () => {
     setOpenModal(false);
   }
@@ -24,14 +45,11 @@ export default function Categoria({CategoriaID, openModal, setOpenModal, arbol})
   }
 
   useEffect(() => {
-    console.log("se cambio la categoria, se actualiza la info", CategoriaInfo)
     createNetwork()
   }, [CategoriaInfo]);
 
   function createNetwork(){
     let container = document.getElementById('categoria')
-    console.log("Create network")
-    console.log(CategoriaInfo)
     if(CategoriaInfo === "No existe el arbol") return;
 
     const data = {
@@ -68,43 +86,52 @@ export default function Categoria({CategoriaID, openModal, setOpenModal, arbol})
         },
       },
     };
-    new Network(container, data, options);
+    new Network(container, data, options).on("click", function (params) {
+      params.event = "[original event]";
+      const proyectoNodeID = this.getNodeAt(params.pointer.DOM);
+      if(proyectoNodeID !== undefined){
+        console.log("intentando abrir modal de tareas")
+        //console.log(CategoriaInfo.proyectos.buscar_info_id(proyectoNodeID))
+        setProjectID(proyectoNodeID)
+      }
+    });
   }
 
   function submit(e) {
     e.preventDefault()
     const proyecto = e.target.proyecto.value
-    console.log("Añadiendo", arbol)
     createProyect(proyecto)
     createNetwork()
-    console.log('agregado')
     e.target.proyecto.value = ''
   }
 
   return(
-    <Modal show={openModal} onShow={handleOpen} onHide={handleClose} size='xl'>
-      <Modal.Header closeButton>
-        <Modal.Title>Mirando los proyectos de {CategoriaInfo.valor}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    <>
+      <Tareas projectID={projectID} categoriaID={CategoriaID} arbol={arbol} openModal={openTareas} setOpenModalTareas={setProjectID} />
+      <Modal show={openModal} onShow={handleOpen} onHide={handleClose} size='xl'>
+        <Modal.Header closeButton>
+          <Modal.Title>Mirando los proyectos de {CategoriaInfo.valor}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
 
-        <form onSubmit={submit}>
-          <label>Ingrese un proyecto</label>
-          <input type="text" name="proyecto" />
-          <button>Subir</button>
-        </form>
+          <form onSubmit={submit}>
+            <label>Ingrese un proyecto</label>
+            <input type="text" name="proyecto" />
+            <button>Subir</button>
+          </form>
 
-        <div id='categoria'/>
+          <div id='categoria'/>
 
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Save Changes
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
