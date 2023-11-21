@@ -12,6 +12,7 @@ export default function Categoria({CategoriaID, openModal, setOpenModal, arbol})
   useEffect(() => {
     if(projectID === 0) {
       setOpenTareas(false)
+      createNetwork();
       return;
     }
     console.log("abriendo modal de tareas 2")
@@ -108,7 +109,7 @@ export default function Categoria({CategoriaID, openModal, setOpenModal, arbol})
   return(
     <>
       <Tareas projectID={projectID} categoriaID={CategoriaID} arbol={arbol} openModal={openTareas} setOpenModalTareas={setProjectID} />
-      <Modal show={openModal} onShow={handleOpen} onHide={handleClose} size='xl'>
+      <Modal show={openModal} onShow={handleOpen} onHide={handleClose} size='xl' id={'categoriaModal'}>
         <Modal.Header closeButton>
           <Modal.Title>Mirando los proyectos de {CategoriaInfo.valor}</Modal.Title>
         </Modal.Header>

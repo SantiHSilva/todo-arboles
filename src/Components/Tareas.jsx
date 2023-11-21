@@ -11,6 +11,8 @@ export default function Tareas({projectID, categoriaID, arbol, openModal, setOpe
     console.log("Intentando cerrar panel de tareas")
     setProyecto('')
     setOpenModalTareas(0)
+
+    document.getElementById('categoriaModal').style.display = 'block'
   }
 
   const handleOpen = () => {
@@ -19,6 +21,8 @@ export default function Tareas({projectID, categoriaID, arbol, openModal, setOpe
     //setProyecto(arbol.buscar_proyecto_id(categoriaID, projectID))
     setProyecto(arbol.buscar_info_id(categoriaID).proyectos.buscar_info_id(projectID))
     setUpdate(true)
+
+    document.getElementById('categoriaModal').style.display = 'none'
   }
 
   useEffect(() => {

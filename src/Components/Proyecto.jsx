@@ -9,7 +9,6 @@ export default function Proyecto({nodes, edges, arbol}){
 
   function createNetwork(){
     const container = document.getElementById('proyectos')
-    const container2 = document.getElementById('proyectos2')
 
     const data = {
       nodes: nodes,
@@ -45,7 +44,6 @@ export default function Proyecto({nodes, edges, arbol}){
         },
       },
     };
-    new Network(container2, data, options)
 
     new Network(container, data, options).on("click", function (params) {
       params.event = "[original event]";
@@ -83,14 +81,6 @@ export default function Proyecto({nodes, edges, arbol}){
         border: "1px solid lightgray",
       }}
     />
-      <div
-        id={'proyectos2'}
-        style={{
-          width: "600px",
-          height: "600px",
-          border: "1px solid lightgray",
-        }}
-      />
       
       <Categoria
         CategoriaID={categoriaID}
