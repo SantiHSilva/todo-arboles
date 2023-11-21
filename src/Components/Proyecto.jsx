@@ -73,15 +73,19 @@ export default function Proyecto({nodes, edges, arbol}){
   return(
     <section>
 
-    <div
-      id={'proyectos'}
-      style={{
-        width: "600px",
-        height: "600px",
-        border: "1px solid lightgray",
-      }}
-    />
-      
+      <h2 className='text-center font-italic'>
+        Árbol de categorias
+      </h2>
+
+      <div
+        id={'proyectos'}
+        style={{
+          width: "600px",
+          height: "600px",
+          border: "1px solid lightgray",
+        }}
+      />
+
       <Categoria
         CategoriaID={categoriaID}
         openModal={openModal}

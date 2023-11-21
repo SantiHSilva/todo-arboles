@@ -1,4 +1,4 @@
-import {Button, Modal} from "react-bootstrap";
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 
 export default function Tareas({projectID, categoriaID, arbol, openModal, setOpenModalTareas}){
@@ -49,14 +49,23 @@ export default function Tareas({projectID, categoriaID, arbol, openModal, setOpe
   function mostrarTareas(){
     if(tareas.length === 0){
       return(
-        <p>No hay tareas</p>
+        <table className='table table-responsive table-bordered'>
+          <thead>
+          <tr>
+            <th>Tarea</th>
+            <th>Prioridad</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td colSpan={2} className='fw-bold text-decoration-underline'>No hay tareas</td>
+          </tr>
+          </tbody>
+        </table>
       )
     }
-    console.log("tareas",tareas)
-    const tareasFiltradasPorID = tareas.filter(tarea => tarea.proyectID === projectID)
-    console.log("tAReas filtradas",tareasFiltradasPorID)
     return(
-      <table className='table table-responsive'>
+      <table className='table table-responsive table-bordered'>
         <thead>
         <tr>
           <th>Tarea</th>
@@ -79,38 +88,59 @@ export default function Tareas({projectID, categoriaID, arbol, openModal, setOpe
 
 
   return(
-    <Modal show={openModal} onShow={handleOpen} onHide={handleClose} size={"xl"} style={{
+    <Modal centered show={openModal} onShow={handleOpen} onHide={handleClose} size={"xl"} style={{
       /*blur*/
       backdropFilter: "blur(5px)",
     }}>
       <Modal.Header closeButton>
-        <Modal.Title>Mirando tareas de: '{proyecto.valor}'</Modal.Title>
+        <Modal.Title>
+          <div className='d-flex'>
+            Gestionando las tareas de:&nbsp;<section className='fw-bold'>{proyecto.valor}</section>
+          </div>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
 
-        <form onSubmit={addTareas}>
-          <label>Ingrese el nombre de la tarea</label>
-          <input type="text" name="tarea"/>
-          <label>Ingrese la prioridad</label>
-          <select name="prioridad">
-            <option value="alta">Alta</option>
-            <option value="media">Media</option>
-            <option value="baja">Baja</option>
-          </select>
-          <button>Añadir</button>
-        </form>
+        <Container>
+          <Row>
+            <Col xs={5} className={'align-self-center'}>
+              <form onSubmit={addTareas}>
+                <section>
+                  <label className='form-label'>Ingrese el nombre de la tarea</label>
+                  <input type="text" name="tarea" className='form-control'/>
+                </section>
 
-        <section>
-          {mostrarTareas()}
-        </section>
+                <section>
+                  <label className='form-label'>Ingrese la prioridad</label>
+                  <select name="prioridad" className='form-select'>
+                    <option value="ALTA">Alta</option>
+                    <option value="MEDIA">Media</option>
+                    <option value="BAJA">Baja</option>
+                  </select>
+                </section>
+
+                <div className="form-text">Las tareas se mostraran reflejados por orden lexicografico</div>
+
+                <br/>
+                <button
+                  className={'btn btn-primary'}
+                >
+                  Añadir
+                </button>
+              </form>
+            </Col>
+            <Col xs={7} className={'align-self-baseline text-center'}>
+              <section>
+                {mostrarTareas()}
+              </section>
+            </Col>
+          </Row>
+        </Container>
 
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Save Changes
+          Cerrar
         </Button>
       </Modal.Footer>
     </Modal>

@@ -1,4 +1,4 @@
-import {Button, Modal} from "react-bootstrap";
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {Network} from "vis-network";
 import Tareas from "./Tareas.jsx";
@@ -109,27 +109,56 @@ export default function Categoria({CategoriaID, openModal, setOpenModal, arbol})
   return(
     <>
       <Tareas projectID={projectID} categoriaID={CategoriaID} arbol={arbol} openModal={openTareas} setOpenModalTareas={setProjectID} />
-      <Modal show={openModal} onShow={handleOpen} onHide={handleClose} size='xl' id={'categoriaModal'}>
+      <Modal centered show={openModal} onShow={handleOpen} onHide={handleClose} size='xl' id={'categoriaModal'}>
         <Modal.Header closeButton>
-          <Modal.Title>Mirando los proyectos de {CategoriaInfo.valor}</Modal.Title>
+          <Modal.Title
+            style={{
+              /* No padding */
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            <div className='d-flex'>
+              Gestionando los proyectos de&nbsp;<section className='fw-bold'>{CategoriaInfo.valor}</section>.
+            </div>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
-          <form onSubmit={submit}>
-            <label>Ingrese un proyecto</label>
-            <input type="text" name="proyecto" />
-            <button>Subir</button>
-          </form>
+          <Container>
 
-          <div id='categoria'/>
+            <Row
+            >
+              <Col xs={7} className={'align-self-center'}>
+                <h2 className='text-center font-italic'>
+                  Árbol de proyectos
+                </h2>
+
+                <div id='categoria'
+                     style={{
+                       width: "600px",
+                       height: "360px",
+                       border: "1px solid lightgray",
+                     }}
+                />
+              </Col>
+              <Col xs={5} className={'align-self-center'}>
+                <form onSubmit={submit}>
+                  <label className='form-label'>Ingrese un proyecto</label>
+                  <input type="text" name="proyecto" className='form-control' />
+                  <div className="form-text">Los nodos se mostraran reflejados por orden lexicografico</div>
+                  <br/>
+                  <button className='btn btn-primary '>Añadir</button>
+                </form>
+              </Col>
+            </Row>
+
+          </Container>
 
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            Cerrar
           </Button>
         </Modal.Footer>
       </Modal>
