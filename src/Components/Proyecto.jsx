@@ -57,12 +57,14 @@ export default function Proyecto({nodes, edges, arbol}){
   }
 
   useEffect(() => {
-    if(categoriaID === 0) return;
+    if(categoriaID === 0) return
+    console.log("se abrio el modal", categoriaID)
     setOpenModal(true)
   }, [categoriaID]);
 
   useEffect(() => {
     if (openModal) return;
+    console.log("se cerro el modal")
     setCategoriaID(0);
   }, [openModal]);
 

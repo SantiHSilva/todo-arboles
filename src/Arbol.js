@@ -18,6 +18,7 @@ class Arbol {
   }
 
   agregar(valor) {
+    if(valor === "" ||valor === null || valor === undefined) return;
     if(this._existe(valor)) return;
     this.numNodos++;
     const nodo = new Nodo(valor, this.numNodos);
@@ -30,7 +31,8 @@ class Arbol {
   }
 
   agregar_proyecto(nodeID, valor) {
-    const nodo = this.buscar_info_id(id);
+    const nodo = this.buscar_info_id(nodeID);
+    console.log(nodo)
     if(nodo.proyectos._existe(valor)) return;
     nodo.proyectos.agregar(valor);
   }
